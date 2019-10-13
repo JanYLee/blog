@@ -1,3 +1,9 @@
+/**
+ * 检测数据类型工具函数
+ * 相关文章 https://www.yuque.com/tokido/ytl05u/sx5d7c
+ * @export
+ * @class Utils
+ */
 export default class Utils {
   static isObject(data) {
     return Object.prototype.toString.call(data) === '[object Object]';
