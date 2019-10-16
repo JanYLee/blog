@@ -1,17 +1,13 @@
-export default function _new() {
-    let target = {};
-    //第一个参数是构造函数
-    let [constructor, ...args] = [...arguments];
-    //执行[[原型]]连接;target 是 constructor 的实例
-    target.__proto__ = constructor.prototype;
-    //执行构造函数，将属性或方法添加到创建的空对象上
-    let result = constructor.apply(target, args);
-    if (result && (typeof (result) == "object" || typeof (result) == "function")) {
-        //如果构造函数执行的结构返回的是一个对象，那么返回这个对象
-        return result;
-    }
-    //如果构造函数返回的不是一个对象，返回创建的新对象
-    return target;
+export default function myNew() {
+  // 获取myNew参数, 第一个传入为构造函数, 后面为构造函数的参数
+  const [constructor, ...args] = [...arguments];
+  
+  // 创建一个空对象, 并绑定原型对象
+  const obj = Object.create(constructor.prototype);
+  
+  // 执行构造函数, 通过apply把构造函数中的this替换为上面新建的空对象, 为空对象赋值属性名和属性值
+  const instance = constructor.apply(obj, args);
+  
+  // 判断是否有返回值, 返回值是否是对象类型, 是对象类型则使用, 否则使用原来的空对象
+  return (instance && (typeof instance === 'object' || typeof instance === 'function')) ? instance : obj;
 }
-
-
