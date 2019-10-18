@@ -2,13 +2,14 @@
 /** call */
 Function.prototype.myCall = function() {
   const ctx = arguments[0] || window;
-  ctx.fn = this;
+  const fn = Symbol();
+  ctx[fn] = this;
   const args = [];
   for(let i=1; i < arguments.length; i++) {
     args.push(`arguments[${i}]`);
   }
-  const result = eval(`ctx.fn(${args.join(',')})`);
-  delete ctx.fn;
+  const result = eval(`ctx[fn](${args.join(',')})`);
+  delete ctx[fn];
   return result;
 }
 
@@ -26,18 +27,19 @@ infoCall.myCall(obj, 'test arg'); // this.name: obj , arg:  test arg
 
 /** apply */
 Function.prototype.myApply = function(ctx=window, arr) {
-  ctx.fn = this;
+  const fn = Symbol();
+  ctx[fn] = this;
   let result;
   if(arr) {
     const args = [];
     for(let i=0; i<arr.length; i++) {
       args.push(`arr[${i}]`);
     }
-    result = eval(`ctx.fn(${args.join(',')})`);
+    result = eval(`ctx[fn](${args.join(',')})`);
   } else {
-    result = ctx.fn();
+    result = ctx[fn]();
   }
-  delete ctx.fn;
+  delete ctx[fn];
   return result;
 }
 
